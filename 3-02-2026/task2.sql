@@ -24,4 +24,3 @@ insert into courses values(8,'javascript',10000);
 insert into courses values(9,'java',10000);
 insert into courses values(10,'python',10000);
 
-insert into ENROLLMENTS values()
