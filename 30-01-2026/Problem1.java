@@ -33,9 +33,13 @@ public class Problem1 {
             if (file.createNewFile()) {
                 System.out.println("File created");
             }
+            else {
+                System.out.println("File already Exists");
+            }
 
             // System.out.println(file.getPath()); //return string 
             Path path = Path.of("data.txt");
+
 
             // System.out.println( path); //returns object 
             int sentences = 0;
@@ -44,24 +48,20 @@ public class Problem1 {
             HashMap<String, Integer> map = new HashMap<>();
 
             PriorityQueue<Item> pq = new PriorityQueue<>((a, b) -> Integer.compare(b.freq, a.freq));
-            Stream<String> stream = Files.lines(path);
+            
 
-            try {
+            try(Stream<String> stream = Files.lines(path)) {
                 for (String line : (Iterable<String>) stream::iterator) {
                     for (String i : line.split("\\s+")) {
                         words++;
-                        characters += line.replaceAll("\\s+", "").length();
-                        ;
+                        characters += i.replaceAll("\\s+", "").length();
+                        
                         i = i.toLowerCase();
                         map.put(i, map.getOrDefault(i, 0) + 1);
                     }
 
                 }
-            } finally {
-                if (stream != null) {
-                    stream.close();
-                }
-            }
+            } 
 
             //changing tab space to space
             String content = Files.readString(path);
@@ -95,6 +95,7 @@ public class Problem1 {
 
             // == and . equals()
             String wordSplit[] = Files.readString(path).split(" ");
+            
             for (String i : wordSplit) {
                 for (String j : wordSplit) {
                     if (i == j) {
