@@ -9,9 +9,14 @@ public class ServiceB {
 
     private  ServiceA serviceA;
 
-
-    @Autowired
-    public void setServiceA(ServiceA serviceA) {
+    public ServiceB(ServiceA serviceA) {
         this.serviceA = serviceA;
+
     }
+
+
+//    @Autowired
+//    public void setServiceA(ServiceA serviceA) {
+//        this.serviceA = serviceA;
+//    }
 }

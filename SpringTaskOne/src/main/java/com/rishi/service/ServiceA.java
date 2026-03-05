@@ -17,9 +17,9 @@ public class ServiceA {
 //
 //    }
 
-    @Autowired
-    public void setServiceB(ServiceB serviceB) {
-        this.serviceB = serviceB;
-
-    }
+//    @Autowired
+//    public void setServiceB(ServiceB serviceB) {
+//        this.serviceB = serviceB;
+//
+//    }
 }
