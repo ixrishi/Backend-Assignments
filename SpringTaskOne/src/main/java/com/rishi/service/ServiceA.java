@@ -11,11 +11,11 @@ public class ServiceA {
 
     private  ServiceB serviceB;
 
-//    @Lazy
-//    public ServiceA(ServiceB serviceB) {
-//        this.serviceB = serviceB;
-//
-//    }
+    @Lazy
+    public ServiceA(ServiceB serviceB) {
+        this.serviceB = serviceB;
+
+    }
 
 //    @Autowired
 //    public void setServiceB(ServiceB serviceB) {
