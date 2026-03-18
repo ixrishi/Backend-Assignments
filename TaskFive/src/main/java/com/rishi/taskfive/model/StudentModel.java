@@ -19,4 +19,9 @@ public class StudentModel {
     String name;
     @Column(name = "age")
     int age;
+
+    
+
+
+    String email;
 }

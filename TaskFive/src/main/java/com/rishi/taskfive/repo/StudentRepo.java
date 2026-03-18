@@ -22,6 +22,9 @@ public interface StudentRepo  extends JpaRepository<StudentModel,Integer> {
 
     List<StudentModel> findByName(String name);
 
+    List<StudentModel> findByNameAndId(String name, int id);
+
+
 @Query("select s from StudentModel s where s.age > :age")
     List<StudentModel> findByAgeGreaterThan(int age);
 }
