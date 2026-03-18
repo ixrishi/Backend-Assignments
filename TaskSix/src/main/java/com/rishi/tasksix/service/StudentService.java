@@ -15,20 +15,17 @@ import java.util.List;
 @Service
 public class StudentService {
 
+//    @Autowired
     private  StudentRepo repo;
-
+//    @Autowired
     private  Utility utility;
 
     @Autowired
-    public StudentService(StudentRepo repo) {
+    public StudentService(StudentRepo repo, Utility utility) {
         this.repo = repo;
-    }
-
-    @Autowired
-    public StudentService(Utility utility) {
-
         this.utility = utility;
     }
+
 
     public List<StudentResponseDTO> getAllStudents() {
 
@@ -55,8 +52,12 @@ public class StudentService {
 
         Student student = utility.toEntity(dto);
         Student saved = repo.save(student);
+        repo.save(student);
+        repo.save(student);
+        repo.save(student);
+        throw new RuntimeException("runtime");
 
-        return utility.toResponseDTO(saved);
+//        return utility.toResponseDTO(saved);
     }
 
     @Transactional

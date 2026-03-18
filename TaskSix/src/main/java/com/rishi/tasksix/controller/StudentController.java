@@ -36,11 +36,13 @@ class StudentController {
         return service.saveStudent(dto);
     }
 
+
     @PutMapping("/{id}")
     public StudentResponseDTO update(@PathVariable int id,
                                      @RequestBody StudentRequestDTO dto) {
         return service.updateStudent(id, dto);
     }
+
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable int id) {
