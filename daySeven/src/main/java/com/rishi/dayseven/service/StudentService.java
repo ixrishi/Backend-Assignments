@@ -1,26 +1,37 @@
-package com.rishi.tasksix.service;
+package com.rishi.dayseven.service;
 
-import com.rishi.tasksix.DTO.StudentRequestDTO;
-import com.rishi.tasksix.DTO.StudentResponseDTO;
-import com.rishi.tasksix.model.Student;
-import com.rishi.tasksix.repo.StudentRepo;
-import com.rishi.tasksix.utils.Utility;
+
+import com.rishi.dayseven.DTO.StudentRequestDTO;
+import com.rishi.dayseven.DTO.StudentResponseDTO;
+import com.rishi.dayseven.GlobalExceptionHandler;
+import com.rishi.dayseven.customExceptions.AppException;
+import com.rishi.dayseven.customExceptions.UserNotFoundException;
+import com.rishi.dayseven.model.Student;
+import com.rishi.dayseven.repo.StudentRepo;
+import com.rishi.dayseven.utils.Utility;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@CacheConfig(cacheNames = "student")
+
 @Service
 public class StudentService {
 
 //    @Autowired
-    private  StudentRepo repo;
+    private StudentRepo repo;
 //    @Autowired
-    private  Utility utility;
+    private Utility utility;
+
+    @Autowired
+    private GlobalExceptionHandler globalExceptionHandler;
 
     @Autowired
     public StudentService(StudentRepo repo, Utility utility) {
@@ -28,8 +39,10 @@ public class StudentService {
         this.utility = utility;
     }
 
-    @Cacheable(key = "'all'")
+
     public List<StudentResponseDTO> getAllStudents() {
+
+
 
         List<Student> students = repo.findAll();
         List<StudentResponseDTO> responseList = new ArrayList<>();
@@ -39,44 +52,35 @@ public class StudentService {
         }
 
         return responseList;
+
     }
 
-    @Cacheable(key = "#id")
+
     public StudentResponseDTO getStudentById(int id) {
 
         Student student = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new UserNotFoundException("Student not found with id:"+id));
 
         return utility.toResponseDTO(student);
     }
 
-    @Transactional
-    @Caching(
-            put = @CachePut(key = "#result.id"),
-            evict = @CacheEvict(key = "'all'")
-    )
-    public StudentResponseDTO saveStudent(StudentRequestDTO dto) {
+   @Transactional
+    public StudentResponseDTO saveStudent( StudentRequestDTO dto) {
 
         Student student = utility.toEntity(dto);
         Student saved = repo.save(student);
-//        repo.save(student);
-//        repo.save(student);
-//        repo.save(student);
-//        throw new RuntimeException("runtime");
+
 
         return utility.toResponseDTO(saved);
 
     }
 
     @Transactional
-    @Caching(
-            put = @CachePut(key = "#id"),
-            evict = @CacheEvict(key = "'all'")
-    )
+
     public StudentResponseDTO updateStudent(int id, StudentRequestDTO dto) {
 
         Student student = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new AppException("Student not found with id:"+id , HttpStatus.NOT_FOUND));
 
         student.setName(dto.getName());
         student.setAge(dto.getAge());
@@ -86,13 +90,13 @@ public class StudentService {
     }
 
     @Transactional
-    @Caching(
-            evict = {
-                    @CacheEvict(key = "#id"),
-                    @CacheEvict(key = "'all'")
-            }
-    )
     public void deleteStudent(int id) {
+        if(repo.existsById(id))
         repo.deleteById(id);
+        else {
+            throw  new UserNotFoundException("Student not Found with id:"+id);
+        }
     }
+
+
 }

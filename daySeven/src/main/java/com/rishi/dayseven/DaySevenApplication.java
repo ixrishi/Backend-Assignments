@@ -1,16 +1,13 @@
-package com.rishi.tasksix;
+package com.rishi.dayseven;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
-
 
 @SpringBootApplication
-@EnableCaching
-public class TaskSixApplication {
+public class DaySevenApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TaskSixApplication.class, args);
+        SpringApplication.run(DaySevenApplication.class, args);
     }
 
 }
